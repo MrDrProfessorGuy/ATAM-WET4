@@ -17,6 +17,7 @@
 #define MAXLENGTH 128
 #define SHT_STRTAB 0x03
 
+void End(ElfFile file, int fd);
 
 Elf64_Shdr get_section_str_table(Elf64_Ehdr elf_header,int fd){
     Elf64_Off offset = elf_header.e_shoff;
@@ -62,9 +63,20 @@ int main(int argc,char* argv[]) {
     elf_header = getElfHeader(elf_file);
     if(!isExecutable(elf_header)){
         printf("PRF:: %s not an executable! :(\n)",program_name);
+        End(elf_file, fd);
     }
     
     Elf64_Shdr symtab = get_section_header(elf_file, elf_header, ".symtab", 0);
+    Elf64_Sym func_sym;
+    int res = readSymtab(elf_file, symtab, "foo", &func_sym);
+    if (res == NAME_NOT_FOUND){
+        printf("PRF:: %s not found!\n", function_name);
+        End(elf_file, fd);
+    }
+    if (ELF64_ST_BIND(func_sym.st_info) != STB_GLOBAL){
+        printf("PRF:: %s not found!\n", function_name);
+        End(elf_file, fd);
+    }
     
     
     
@@ -84,11 +96,15 @@ int main(int argc,char* argv[]) {
     
     */
     
-    File_unmap(elf_file, fd);
-    File_close(fd);
+    End(elf_file, fd);
     return 0;
 }
 
+void End(ElfFile file, int fd){
+    File_unmap(file, fd);
+    File_close(fd);
+    exit(1);
+}
 
 
 

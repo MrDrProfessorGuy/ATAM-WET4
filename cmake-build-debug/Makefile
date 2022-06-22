@@ -142,6 +142,33 @@ ATAM_WET4/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ATAM_WET4.dir/build.make CMakeFiles/ATAM_WET4.dir/build
 .PHONY : ATAM_WET4/fast
 
+Debugger.o: Debugger.c.o
+
+.PHONY : Debugger.o
+
+# target to build an object file
+Debugger.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ATAM_WET4.dir/build.make CMakeFiles/ATAM_WET4.dir/Debugger.c.o
+.PHONY : Debugger.c.o
+
+Debugger.i: Debugger.c.i
+
+.PHONY : Debugger.i
+
+# target to preprocess a source file
+Debugger.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ATAM_WET4.dir/build.make CMakeFiles/ATAM_WET4.dir/Debugger.c.i
+.PHONY : Debugger.c.i
+
+Debugger.s: Debugger.c.s
+
+.PHONY : Debugger.s
+
+# target to generate assembly for a file
+Debugger.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ATAM_WET4.dir/build.make CMakeFiles/ATAM_WET4.dir/Debugger.c.s
+.PHONY : Debugger.c.s
+
 ElfReader.o: ElfReader.c.o
 
 .PHONY : ElfReader.o
@@ -232,6 +259,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... ATAM_WET4"
+	@echo "... Debugger.o"
+	@echo "... Debugger.i"
+	@echo "... Debugger.s"
 	@echo "... ElfReader.o"
 	@echo "... ElfReader.i"
 	@echo "... ElfReader.s"

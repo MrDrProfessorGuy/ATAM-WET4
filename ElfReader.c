@@ -7,6 +7,7 @@
 
 #define NextSH(sh, size) ((Elf64_Shdr*) ((char*)sh + size))
 #define NextSym(sym, size) ((Elf64_Sym*) ((char*)sym + size))
+#define FileOffset(cast, file, offset) ((cast) ((char*)file + offset))
 
 int isExecutable(Elf64_Ehdr elf_header){
     return elf_header.e_type == ET_EXEC;
@@ -59,10 +60,12 @@ Elf64_Shdr get_section_header(const ElfFile elf_file, Elf64_Ehdr elf_header, cha
     Elf64_Off sh_strtbl_off = sh_table_start[sh_strtbl_idx].sh_offset;
     Elf64_Xword sh_strtbl_size = sh_table_start[sh_strtbl_idx].sh_size;
     
-    if (sh_name != NULL){
-        sh_index = get_str_index(elf_file, sh_strtbl_off, sh_strtbl_size, sh_name);
+    if (sh_name == NULL){
+        Elf64_Shdr a = sh_table_start[sh_index];
+        return a;
     }
     
+    sh_index = get_str_index(elf_file, sh_strtbl_off, sh_strtbl_size, sh_name);
     Elf64_Shdr* section_header = sh_table_start;
     for (Elf64_Half index = 0; index <= sh_num; index++) {
         if (section_header->sh_name == sh_index){
@@ -77,7 +80,7 @@ Elf64_Shdr get_section_header(const ElfFile elf_file, Elf64_Ehdr elf_header, cha
      
 }
 
-int readSymtab(const ElfFile elf_file, Elf64_Shdr symtab_sh, char* sym_name){
+int readSymtab(const ElfFile elf_file, Elf64_Shdr symtab_sh, char* sym_name, Elf64_Sym* func_sym){
     Elf64_Xword symtable_size = symtab_sh.sh_size;
     Elf64_Xword sym_size = symtab_sh.sh_entsize;
     Elf64_Xword sym_num = symtable_size/sym_size;
@@ -93,19 +96,18 @@ int readSymtab(const ElfFile elf_file, Elf64_Shdr symtab_sh, char* sym_name){
         return NAME_NOT_FOUND;
     }
     
-    Elf64_Sym* symbol = (Elf64_Sym*) elf_file + symtab_sh.sh_offset;
+    Elf64_Sym* symbol = FileOffset(Elf64_Sym*, elf_file, symtab_sh.sh_offset);
     for (Elf64_Xword index = 0; index < sym_num; index++) {
         
         if (sym_name_index == symbol->st_name){
-            break;
+            *func_sym = *symbol;
+            return SYM_FOUND;
         }
         
         symbol = NextSym(symbol, sym_size);
     }
     
-    
-    
-    return SYM_FOUND;
+    return NAME_NOT_FOUND;
 }
 
 

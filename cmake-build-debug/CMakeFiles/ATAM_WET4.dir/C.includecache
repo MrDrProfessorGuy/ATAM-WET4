@@ -6,35 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/ElfReader.c
-ElfReader.h
-/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/ElfReader.h
-stdlib.h
-/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/stdlib.h
-string.h
-/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/string.h
-assert.h
-/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/assert.h
-
 /Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/ElfReader.h
 elf64.h
 /Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/elf64.h
-
-/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/ReadLib.c
-ReadLib.h
-/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/ReadLib.h
-fcntl.h
--
-stdio.h
--
-stdlib.h
--
-unistd.h
--
-sys/mman.h
--
-unistd.h
-/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/unistd.h
 
 /Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/ReadLib.h
 elf64.h
