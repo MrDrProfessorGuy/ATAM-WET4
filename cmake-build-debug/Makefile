@@ -142,6 +142,60 @@ ATAM_WET4/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ATAM_WET4.dir/build.make CMakeFiles/ATAM_WET4.dir/build
 .PHONY : ATAM_WET4/fast
 
+ElfReader.o: ElfReader.c.o
+
+.PHONY : ElfReader.o
+
+# target to build an object file
+ElfReader.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ATAM_WET4.dir/build.make CMakeFiles/ATAM_WET4.dir/ElfReader.c.o
+.PHONY : ElfReader.c.o
+
+ElfReader.i: ElfReader.c.i
+
+.PHONY : ElfReader.i
+
+# target to preprocess a source file
+ElfReader.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ATAM_WET4.dir/build.make CMakeFiles/ATAM_WET4.dir/ElfReader.c.i
+.PHONY : ElfReader.c.i
+
+ElfReader.s: ElfReader.c.s
+
+.PHONY : ElfReader.s
+
+# target to generate assembly for a file
+ElfReader.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ATAM_WET4.dir/build.make CMakeFiles/ATAM_WET4.dir/ElfReader.c.s
+.PHONY : ElfReader.c.s
+
+ReadLib.o: ReadLib.c.o
+
+.PHONY : ReadLib.o
+
+# target to build an object file
+ReadLib.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ATAM_WET4.dir/build.make CMakeFiles/ATAM_WET4.dir/ReadLib.c.o
+.PHONY : ReadLib.c.o
+
+ReadLib.i: ReadLib.c.i
+
+.PHONY : ReadLib.i
+
+# target to preprocess a source file
+ReadLib.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ATAM_WET4.dir/build.make CMakeFiles/ATAM_WET4.dir/ReadLib.c.i
+.PHONY : ReadLib.c.i
+
+ReadLib.s: ReadLib.c.s
+
+.PHONY : ReadLib.s
+
+# target to generate assembly for a file
+ReadLib.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ATAM_WET4.dir/build.make CMakeFiles/ATAM_WET4.dir/ReadLib.c.s
+.PHONY : ReadLib.c.s
+
 main.o: main.c.o
 
 .PHONY : main.o
@@ -178,6 +232,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... ATAM_WET4"
+	@echo "... ElfReader.o"
+	@echo "... ElfReader.i"
+	@echo "... ElfReader.s"
+	@echo "... ReadLib.o"
+	@echo "... ReadLib.i"
+	@echo "... ReadLib.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

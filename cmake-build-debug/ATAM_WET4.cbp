@@ -76,6 +76,18 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/ElfReader.c">
+			<Option target="ATAM_WET4"/>
+		</Unit>
+		<Unit filename="/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/ElfReader.h">
+			<Option target="ATAM_WET4"/>
+		</Unit>
+		<Unit filename="/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/ReadLib.c">
+			<Option target="ATAM_WET4"/>
+		</Unit>
+		<Unit filename="/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/ReadLib.h">
+			<Option target="ATAM_WET4"/>
+		</Unit>
 		<Unit filename="/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/main.c">
 			<Option target="ATAM_WET4"/>
 		</Unit>
