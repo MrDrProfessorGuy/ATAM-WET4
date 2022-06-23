@@ -5,4 +5,17 @@
 #ifndef ATAM_WET4_DEBUGGER_H
 #define ATAM_WET4_DEBUGGER_H
 
+
+#include "elf64.h"
+
+
+
+#define FORK_ERROR -1
+
+
+
+
+
+
+
 #endif //ATAM_WET4_DEBUGGER_H
