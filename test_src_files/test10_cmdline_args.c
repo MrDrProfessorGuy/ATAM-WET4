@@ -10,7 +10,7 @@ int main(int argc, char** argv)
   }
   for(int i = 0; i < argc; i++)
   {
-      printf("arg[%d]: %d\n",i, (*(argv+i));
+      printf("arg[%d]: %d\n",i, *(*(argv+i) + i));
     bar(*(*(argv+i) + i));
   }
   return 0;
