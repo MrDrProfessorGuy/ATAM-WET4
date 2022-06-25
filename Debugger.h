@@ -11,8 +11,10 @@
 
 
 #define FORK_ERROR -1
+typedef enum ReturnVal {Success, ProgEnded, TraceError, ForkError} ReturnVal;
 
 
+ReturnVal debug(const char* program_name, char* program_arguments, unsigned long func_address);
 
 
 

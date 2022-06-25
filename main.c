@@ -7,6 +7,7 @@
 
 #include "ReadLib.h"
 #include "ElfReader.h"
+#include "Debugger.h"
 
 
 #define HEADERLENGTH sizeof(Elf64_Ehdr)
@@ -77,8 +78,11 @@ int main(int argc,char* argv[]) {
         printf("PRF:: %s not found!\n", function_name);
         End(elf_file, fd);
     }
+    if (func_sym.st_shndx == STB_UND){
+        printf("%s is Undefined! Need to determine on runtime\n", function_name);
+    }
     
-    
+    debug(program_name, program_arguments, func_sym.st_value);
     
     printf("hello");
     /*
