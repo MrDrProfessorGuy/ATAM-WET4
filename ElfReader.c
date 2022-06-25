@@ -43,7 +43,7 @@ Elf64_Word get_str_index(ElfFile file, Elf64_Off offset, Elf64_Xword size, char*
         index++;
     };
     
-    if (iter > size){
+    if (iter >= size){
         return NAME_NOT_FOUND;
     }
     return iter;
@@ -94,17 +94,19 @@ int readSymtab(const ElfFile elf_file, Elf64_Shdr symtab_sh, char* sym_name, Elf
     Elf64_Shdr sh_strtab = get_section_header(elf_file, getElfHeader(elf_file), NULL, symtab_sh.sh_link);
     
     
-    
-    Elf64_Word sym_name_index = get_str_index(elf_file, sh_strtab.sh_offset, sh_strtab.sh_size, sym_name);;
+    /*
+    Elf64_Word sym_name_index = get_str_index(elf_file, sh_strtab.sh_offset, sh_strtab.sh_size, sym_name);
     printf("readSymtab:: %s, found at index %u\n", sym_name, sym_name_index);
     if (sym_name_index == NAME_NOT_FOUND){
         return NAME_NOT_FOUND;
-    }
+    }*/
     
     Elf64_Sym* symbol = FileOffset(Elf64_Sym*, elf_file, symtab_sh.sh_offset);
     for (Elf64_Xword index = 0; index < sym_num; index++) {
         
-        if (sym_name_index == symbol->st_name){
+        
+        char* sym_str = FileOffset(void*, elf_file,(sh_strtab.sh_offset+symbol->st_name));
+        if (symbol->st_value != 0 && strcmp(sym_str, sym_name) == 0){
             *func_sym = *symbol;
             return SYM_FOUND;
         }

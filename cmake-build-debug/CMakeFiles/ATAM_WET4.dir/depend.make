@@ -9,6 +9,7 @@ CMakeFiles/ATAM_WET4.dir/ReadLib.c.o: ../ReadLib.c
 CMakeFiles/ATAM_WET4.dir/ReadLib.c.o: ../ReadLib.h
 CMakeFiles/ATAM_WET4.dir/ReadLib.c.o: ../elf64.h
 
+CMakeFiles/ATAM_WET4.dir/main.c.o: ../Debugger.h
 CMakeFiles/ATAM_WET4.dir/main.c.o: ../ElfReader.h
 CMakeFiles/ATAM_WET4.dir/main.c.o: ../ReadLib.h
 CMakeFiles/ATAM_WET4.dir/main.c.o: ../elf64.h
