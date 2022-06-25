@@ -87,8 +87,8 @@ int singleStep(){
         perror("ptrace");
         exit(1);
     }
-    printf("   after: 0x%lx\n", Regs().rip-1);
     waitpid(program_pid, &wait_status,0);
+    printf("   after: 0x%lx\n", Regs().rip-1);
     return wait_status;
 }
 
