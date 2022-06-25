@@ -19,6 +19,7 @@ pid_t run_target(const char* program_name, char* program_arguments){
     
     pid_t pid = fork();
     if (pid >0){ ///Debugger
+        int wait_status;
         waitpid(program_pid, &wait_status,0);
         return pid;
     }
