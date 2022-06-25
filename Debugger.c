@@ -15,7 +15,7 @@ enum OP{Add, Remove};
 
 static pid_t program_pid = 0;
 
-pid_t run_target(const char* program_name, char* program_arguments){
+pid_t run_target(const char* program_name, char* program_arguments[]){
     
     pid_t pid = fork();
     if (pid >0){ ///Debugger
@@ -187,7 +187,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
     
 }
 
-ReturnVal debug2(const char* program_name, char* program_arguments, unsigned long func_address){
+ReturnVal debug2(const char* program_name, char* program_arguments[], unsigned long func_address){
     int wait_status;
     unsigned int call_counter = 0;
     unsigned long ret_address = 0;
