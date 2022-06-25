@@ -34,6 +34,13 @@ pid_t run_target(const char* program_name, char* program_arguments){
     
 }
 
+struct user_regs_struct Regs(){
+    struct user_regs_struct regs;
+    ptrace(PTRACE_GETREGS, program_pid, 0, &regs);
+    return regs;
+}
+
+
 unsigned long AddBreakpoint(Elf64_Addr address){
     unsigned long data = ptrace(PTRACE_PEEKTEXT, program_pid, (void*)address, NULL);
     
@@ -81,12 +88,6 @@ ReturnVal Break(unsigned long address){
     }
     RemoveBreakpoint(address, instruction);
     
-}
-
-struct user_regs_struct Regs(){
-    struct user_regs_struct regs;
-    ptrace(PTRACE_GETREGS, program_pid, 0, &regs);
-    return regs;
 }
 
 int singleStep(){
