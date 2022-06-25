@@ -77,7 +77,7 @@ int main(int argc,char* argv[]) {
         End(elf_file, fd);
     }
     if (ELF64_ST_BIND(func_sym.st_info) != STB_GLOBAL){
-        printf("PRF:: %s not found!\n", function_name);
+        printf("PRF:: %s is not a global symbol! :(\n", function_name);
         End(elf_file, fd);
     }
     if (func_sym.st_shndx == STB_UND){
