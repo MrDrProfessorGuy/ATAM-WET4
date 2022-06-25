@@ -86,22 +86,6 @@ int main(int argc,char* argv[]) {
     //Elf64_Addr func_Vaddr = getVirtualAddress(elf_file, func_sym.st_value);
     debug(program_name, program_arguments, func_sym.st_value);
     
-    printf("hello");
-    /*
-    Elf64_Shdr stringtable = get_section_header(elf_header,fd,string_table_name);
-    
-    symtab= get_section_header(elf_header,fd,symtab_name);
-    
-    for (int i=0;i<symtab.sh_size/symtab.sh_entsize;i++) {
-        Elf64_Sym *temp =mmap(NULL,symtab.sh_entsize,PROT_READ,MAP_PRIVATE,fd,symtab.sh_offset+i*symtab.sh_entsize);
-        Elf64_Off offset=temp->st_name+stringtable.sh_offset
-        
-        //unmap
-    }
-    //todo check if global
-    
-    */
-    
     End(elf_file, fd);
     return 0;
 }

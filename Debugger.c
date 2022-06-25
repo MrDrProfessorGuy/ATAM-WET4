@@ -148,15 +148,14 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
     unsigned long ret_instruction = 0;
     unsigned long instruction = 0;
     
-    do{
-       // printf("debug:: ====== iteration %d ======\n", call_counter);
-        
-        /// Add breakPoint at function
-        instruction = AddBreakpoint(func_address);
-        //printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
-        waitFor(func_address);
+    /// Add breakPoint at function
+    instruction = AddBreakpoint(func_address);
+    //printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
+    waitFor(func_address);
     
-        
+    while (WIFSTOPPED(wait_status)){
+       // printf("debug:: ====== iteration %d ======\n", call_counter);
+       
         /// remove breakpoint from function
         RemoveBreakpoint(func_address, instruction);
         regs = Regs();
@@ -186,7 +185,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         /// Add breakPoint at function
         instruction = AddBreakpoint(func_address);
         waitFor(func_address);
-    }while (WIFSTOPPED(wait_status));
+    }
     
     
     
