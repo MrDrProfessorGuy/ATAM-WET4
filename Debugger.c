@@ -96,7 +96,7 @@ void waitFor(unsigned long addr){
     
     ptrace(PTRACE_CONT, program_pid, NULL, NULL);
     waitpid(program_pid, &wait_status,0);
-    unsigned long curr_addr = Regs().rip;
+    unsigned long curr_addr = Regs().rip-1;
     printf("waitFor:: addr: 0x%lx curr_addr: 0x%lx\n", addr, curr_addr);
     while (curr_addr != addr){
         if (!WIFSTOPPED(wait_status)){
@@ -105,7 +105,7 @@ void waitFor(unsigned long addr){
         }
         ptrace(PTRACE_CONT, program_pid, NULL, NULL);
         waitpid(program_pid, &wait_status,0);
-        curr_addr = Regs().rip;
+        curr_addr = Regs().rip-1;
         printf("waitFor:: addr: 0x%lx curr_addr: 0x%lx\n", addr, curr_addr);
     }
     printf(" ===========================\n");
@@ -158,7 +158,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         //assert(!WIFEXITED(wait_status)); /// function should return to the calling address
         //ptrace(PTRACE_GETREGS, program_pid, 0, &regs);
         long ret_value = Regs().rax;
-        printf("PRF:: call %u at 0x%lx returned with %d\n", call_counter, Regs().rip, (int)ret_value);
+        printf("PRF:: call %u at 0x%lx returned with %d\n", call_counter, Regs().rip-1, (int)ret_value);
     
         /// Add breakPoint at function
         instruction = AddBreakpoint(func_address);
