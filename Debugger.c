@@ -131,7 +131,7 @@ int waitFor(unsigned long addr){
 }
 
 
-ReturnVal debug(const char* program_name, char* program_arguments, unsigned long func_address){
+ReturnVal debug(const char* program_name, char* program_arguments[], unsigned long func_address){
     int wait_status;
     unsigned int call_counter = 1;
     unsigned long ret_address = 0;
