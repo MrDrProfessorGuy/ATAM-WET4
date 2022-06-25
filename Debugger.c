@@ -175,7 +175,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         printf("PRF:: call %u at 0x%lx returned with %d\n", call_counter, Regs().rip-1, (int)ret_value);
     
         /// remove breakpoint from function
-        RemoveBreakpoint(ret_address, instruction);
+        RemoveBreakpoint(ret_address, ret_instruction);
         regs = Regs();
         regs.rip -= 1;
         ptrace(PTRACE_SETREGS, program_pid, 0, &regs);
