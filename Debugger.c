@@ -86,7 +86,7 @@ int singleStep(){
     return wait_status;
 }
 
-inline struct user_regs_struct Regs(){
+struct user_regs_struct Regs(){
     struct user_regs_struct regs;
     ptrace(PTRACE_GETREGS, program_pid, 0, &regs);
     return regs;
