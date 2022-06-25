@@ -164,7 +164,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         
         //ptrace(PTRACE_CONT, program_pid, NULL, NULL);
         //waitpid(program_pid, &wait_status,0);
-        wait_status(func_address);
+        waitFor(func_address);
         
         
         call_counter++;
