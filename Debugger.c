@@ -105,7 +105,7 @@ int singleStep(){
 }
 
 
-void waitFor(unsigned long addr){
+int waitFor(unsigned long addr){
     int wait_status;
     //printf(" ========== waitFor ==========\n");
     
@@ -124,7 +124,7 @@ void waitFor(unsigned long addr){
         //printf("waitFor:: addr: 0x%lx curr_addr: 0x%lx\n", addr, curr_addr);
     }
     
-
+    return wait_status;
     
     //printf(" ===========================\n");
     
@@ -154,7 +154,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
     /// Add breakPoint at function
     instruction = AddBreakpoint(func_address);
     //printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
-    waitFor(func_address);
+    wait_status = waitFor(func_address);
     
     while (WIFSTOPPED(wait_status)){
        // printf("debug:: ====== iteration %d ======\n", call_counter);
@@ -179,7 +179,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         call_counter++;
         /// Add breakPoint at function
         instruction = AddBreakpoint(func_address);
-        waitFor(func_address);
+        wait_status = waitFor(func_address);
     }
     
     
