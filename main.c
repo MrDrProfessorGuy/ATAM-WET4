@@ -19,8 +19,8 @@ int main(int argc,char* argv[]) {
     char* function_name = argv[1];
     char* program_name = argv[2];
     char* program_arguments[argc-1];
-    for (int i = 2; i < argc-2; i++) {
-        program_arguments[i] = argv[i];
+    for (int i = 0; i < argc-2; i++) {
+        program_arguments[i] = argv[i+2];
     }
     program_arguments[argc-2];
     

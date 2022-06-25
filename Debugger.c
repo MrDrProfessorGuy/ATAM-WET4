@@ -28,7 +28,7 @@ pid_t run_target(const char* program_name, char* program_arguments){
             exit(1);
         }
         
-        execl(program_name, program_arguments, NULL);
+        execl(program_name, program_arguments);
     }
     
     return FORK_ERROR;
