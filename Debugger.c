@@ -39,6 +39,9 @@ unsigned long AddBreakpoint(Elf64_Addr address){
     unsigned long data_trap = (data & 0xFFFFFFFFFFFFFF00) | 0xCC;
     ptrace(PTRACE_POKETEXT, program_pid, (void*)address, (void*)data_trap);
     
+    unsigned long data2 = ptrace(PTRACE_PEEKTEXT, program_pid, (void*)address, NULL);
+    assert(data2 == data_trap);
+    
     return data;
 }
 unsigned long RemoveBreakpoint(Elf64_Addr address, unsigned long data){
@@ -49,6 +52,8 @@ unsigned long RemoveBreakpoint(Elf64_Addr address, unsigned long data){
     //unsigned long data_trap = (curr_data & 0xFFFFFFFFFFFFFF00) | data;
     ptrace(PTRACE_POKETEXT, program_pid, (void*)address, (void*)data);
     
+    unsigned long data2 = ptrace(PTRACE_PEEKTEXT, program_pid, (void*)address, NULL);
+    assert(data2 == data);
     
     return data;
 }
