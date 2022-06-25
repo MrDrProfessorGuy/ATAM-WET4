@@ -34,7 +34,7 @@ pid_t run_target(const char* program_name, char* program_arguments){
 
 unsigned long AddBreakpoint(Elf64_Addr address){
     unsigned long data = ptrace(PTRACE_PEEKTEXT, program_pid, (void*)address, NULL);
-    printf("DBG: Original data at 0x%x: 0x%x\n", address, data);
+    printf("DBG: Original data at 0x%llx: 0x%lx\n", address, data);
     
     unsigned long data_trap = (data & 0xFFFFFFFFFFFFFF00) | 0xCC;
     ptrace(PTRACE_POKETEXT, program_pid, (void*)address, (void*)data_trap);
