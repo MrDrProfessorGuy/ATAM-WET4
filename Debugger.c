@@ -109,10 +109,9 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
     waitpid(program_pid, &wait_status,0);
     
     /// Add breakPoint at function
+    unsigned long ret_instruction = 0;
     unsigned long instruction = AddBreakpoint(func_address);
     printf("debug:: breaking at function: %lx,  instruction: %lx\n", func_address, instruction);
-    RemoveBreakpoint(func_address, instruction);
-    instruction = AddBreakpoint(func_address);
     ptrace(PTRACE_CONT, program_pid, NULL, NULL);
     waitpid(program_pid, &wait_status,0);
     while (WIFSTOPPED(wait_status)){
@@ -121,7 +120,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         /// add breakpoint at function return address
         //ptrace(PTRACE_GETREGS, program_pid, 0, &regs);
         ret_address = ptrace(PTRACE_PEEKTEXT, program_pid, Regs().rsp, NULL);
-        unsigned long ret_instruction = AddBreakpoint(ret_address);
+        ret_instruction = AddBreakpoint(ret_address);
         printf("debug:: ret_address: %lx,   ret_instruction: %lx\n", ret_address, ret_instruction);
         
         /// remove breakpoint from function
@@ -142,6 +141,12 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         /// Add breakPoint at function
         instruction = AddBreakpoint(func_address);
         printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
+    
+        wait_status = singleStep();
+        //assert(!WIFEXITED(wait_status));
+        RemoveBreakpoint(ret_address, ret_instruction);
+        printf("debug:: ret breakpoint removed\n");
+        
         ptrace(PTRACE_CONT, program_pid, NULL, NULL);
         waitpid(program_pid, &wait_status,0);
         
