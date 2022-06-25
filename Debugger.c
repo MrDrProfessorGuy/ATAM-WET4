@@ -27,7 +27,7 @@ pid_t run_target(const char* program_name, char* program_arguments[]){
         if (ptrace(PTRACE_TRACEME, 0, NULL, NULL) < 0){
             exit(1);
         }
-        execl(program_name, program_name, program_arguments, NULL);
+        execl(program_name, {program_name, program_arguments, NULL});
     }
     
     return FORK_ERROR;
