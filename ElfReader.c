@@ -121,9 +121,9 @@ Elf64_Addr getVirtualAddress(const ElfFile elf_file, Elf64_Off file_offset){
     
     for (Elf64_Half index = 0; index < ph_num; index++){
         Elf64_Off offset = ph->p_offset;
-        
+        printf("getVirtualAddress:: Segment: %llu,   Type: %u\n,    size: %llu\n", offset, ph->p_type, ph->p_filesz);
+    
         if (offset <= file_offset && file_offset < offset + ph->p_filesz ){
-            printf("getVirtualAddress:: Segment: %llu,   Type: %u\n", offset, ph->p_type);
             return ph->p_vaddr + (file_offset - offset);
         }
         ph = NextPH(ph, ph_size);
