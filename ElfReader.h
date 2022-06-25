@@ -21,4 +21,8 @@ Elf64_Ehdr getElfHeader(void* elf_file);
 Elf64_Shdr get_section_header(const ElfFile elf_file, Elf64_Ehdr elf_header, char* sh_name, Elf64_Word sh_index);
 
 int readSymtab(const ElfFile elf_file, Elf64_Shdr symtab_sh, char* sym_name, Elf64_Sym* func_sym);
+
+Elf64_Addr getVirtualAddress(const ElfFile elf_file, Elf64_Off file_offset);
+
+
 #endif //ATAM_WET4_ELFREADER_H

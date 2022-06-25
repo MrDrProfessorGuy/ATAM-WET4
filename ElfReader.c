@@ -4,8 +4,10 @@
 #include "string.h"
 
 #include "assert.h"
+#include "stdio.h"
 
 #define NextSH(sh, size) ((Elf64_Shdr*) ((char*)sh + size))
+#define NextPH(ph, size) ((Elf64_Phdr*) ((char*)ph + size))
 #define NextSym(sym, size) ((Elf64_Sym*) ((char*)sym + size))
 #define FileOffset(cast, file, offset) ((cast) ((char*)file + offset))
 
@@ -111,7 +113,24 @@ int readSymtab(const ElfFile elf_file, Elf64_Shdr symtab_sh, char* sym_name, Elf
 }
 
 
-
+Elf64_Addr getVirtualAddress(const ElfFile elf_file, Elf64_Off file_offset){
+    Elf64_Ehdr elf_header = getElfHeader(elf_file);
+    Elf64_Phdr* ph = FileOffset(Elf64_Phdr*, elf_file, elf_header.e_phoff);
+    Elf64_Half ph_num = elf_header.e_phnum;
+    Elf64_Half ph_size = elf_header.e_phentsize;
+    
+    for (Elf64_Half index = 0; index < ph_num; index++){
+        Elf64_Off offset = ph->p_offset;
+        
+        if (offset <= file_offset && file_offset < offset + ph->p_filesz ){
+            printf("getVirtualAddress:: Segment: %llu,   Type: %u\n", offset, ph->p_type);
+            return ph->p_vaddr + (file_offset - offset);
+        }
+        ph = NextPH(ph, ph_size);
+    }
+    
+    return NULL;
+}
 
 
 

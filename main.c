@@ -82,8 +82,8 @@ int main(int argc,char* argv[]) {
     if (func_sym.st_shndx == STB_UND){
         printf("%s is Undefined! Need to determine on runtime\n", function_name);
     }
-    
-    debug(program_name, program_arguments, func_sym.st_value);
+    Elf64_Addr func_Vaddr = getVirtualAddress(elf_file, func_sym.st_value);
+    debug(program_name, program_arguments, func_Vaddr);
     
     printf("hello");
     /*

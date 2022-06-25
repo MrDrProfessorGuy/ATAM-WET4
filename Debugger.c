@@ -99,7 +99,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
     unsigned long ret_address = 0;
     struct user_regs_struct regs;
     
-    printf("debug:: program_name: %s,   func_address: %lu\n", program_name, func_address);
+    printf("debug:: program_name: %s,   func_address: %lx\n", program_name, func_address);
     
     program_pid = run_target(program_name, program_arguments);
     if (program_pid == ForkError){
@@ -109,7 +109,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
     
     /// Add breakPoint at function
     unsigned long instruction = AddBreakpoint(func_address);
-    printf("debug:: breaking at function: %lu,  instruction: %lu\n", func_address, instruction);
+    printf("debug:: breaking at function: %lx,  instruction: %lx\n", func_address, instruction);
     ptrace(PTRACE_CONT, program_pid, NULL, NULL);
     waitpid(program_pid, &wait_status,0);
     while (WIFSTOPPED(wait_status)){
@@ -118,7 +118,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         //ptrace(PTRACE_GETREGS, program_pid, 0, &regs);
         ret_address = ptrace(PTRACE_PEEKTEXT, program_pid, Regs().rsp, NULL);
         unsigned long ret_instruction = AddBreakpoint(ret_address);
-        printf("debug:: ret_address: %lu,   ret_instruction: %lx\n", ret_address, ret_instruction);
+        printf("debug:: ret_address: %lx,   ret_instruction: %lx\n", ret_address, ret_instruction);
         
         /// remove breakpoint from function
         wait_status = singleStep();
@@ -133,11 +133,11 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         assert(WIFEXITED(wait_status)); /// function should return to the calling address
         //ptrace(PTRACE_GETREGS, program_pid, 0, &regs);
         unsigned long ret_value = Regs().rax & 0x00000000FFFFFFFF;
-        printf("PRF:: run %u returned with %d/n", call_counter, (int)ret_value);
+        printf("PRF:: call %u returned with %d/n", call_counter, (int)ret_value);
     
         /// Add breakPoint at function
         unsigned long instruction = AddBreakpoint(func_address);
-        printf("debug:: breaking at function: %lu,  instruction: %lu\n", func_address, instruction);
+        printf("debug:: breaking at function: %lx,  instruction: %lx\n", func_address, instruction);
         ptrace(PTRACE_CONT, program_pid, NULL, NULL);
         waitpid(program_pid, &wait_status,0);
     }
