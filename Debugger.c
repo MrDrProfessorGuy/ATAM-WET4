@@ -56,8 +56,9 @@ unsigned long RemoveBreakpoint(Elf64_Addr address, unsigned long data){
     //unsigned long data_trap = (curr_data & 0xFFFFFFFFFFFFFF00) | data;
     ptrace(PTRACE_POKETEXT, program_pid, (void*)address, (void*)data);
     
-    unsigned long data2 = ptrace(PTRACE_PEEKTEXT, program_pid, (void*)address, NULL);
-    assert(data2 == data);
+    regs = Regs();
+    regs.rip -= 1;
+    ptrace(PTRACE_SETREGS, program_pid, 0, &regs);
     
     return data;
 }
@@ -158,30 +159,22 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
        
         /// remove breakpoint from function
         RemoveBreakpoint(func_address, instruction);
-        regs = Regs();
-        regs.rip -= 1;
-        ptrace(PTRACE_SETREGS, program_pid, 0, &regs);
         //printf("debug:: function breakpoint removed\n");
         /// add breakpoint at function return address
         ret_address = ptrace(PTRACE_PEEKTEXT, program_pid, Regs().rsp, NULL);
         ret_instruction = AddBreakpoint(ret_address);
+        waitFor(ret_address);
         //printf("debug:: ret_address: 0x%lx,   ret_instruction: 0x%lx\n", ret_address, ret_instruction);
         
         
         /// get return value of function
-        waitFor(ret_address);
         long ret_value = Regs().rax;
         printf("PRF:: run #%u returned with %d\n", call_counter, (int)ret_value);
-    
         /// remove breakpoint from function
         RemoveBreakpoint(ret_address, ret_instruction);
-        regs = Regs();
-        regs.rip -= 1;
-        ptrace(PTRACE_SETREGS, program_pid, 0, &regs);
         //printf("debug:: function breakpoint removed\n");
         
         call_counter++;
-    
         /// Add breakPoint at function
         instruction = AddBreakpoint(func_address);
         waitFor(func_address);
