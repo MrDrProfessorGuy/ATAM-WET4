@@ -34,7 +34,7 @@ pid_t run_target(const char* program_name, char* program_arguments){
 
 unsigned long AddBreakpoint(Elf64_Addr address){
     unsigned long data = ptrace(PTRACE_PEEKTEXT, program_pid, (void*)address, NULL);
-    printf("DBG: Original data at 0x%llx: 0x%lx\n", address, data);
+    //printf("DBG: Original data at 0x%llx: 0x%lx\n", address, data);
     
     unsigned long data_trap = (data & 0xFFFFFFFFFFFFFF00) | 0xCC;
     ptrace(PTRACE_POKETEXT, program_pid, (void*)address, (void*)data_trap);
@@ -43,7 +43,7 @@ unsigned long AddBreakpoint(Elf64_Addr address){
 }
 unsigned long RemoveBreakpoint(Elf64_Addr address, unsigned long data){
     unsigned long curr_data = ptrace(PTRACE_PEEKTEXT, program_pid, (void*)address, NULL);
-    printf("DBG: restoring data at 0x%llx from  0x%lx to 0x%lx\n", address, curr_data, data);
+    //printf("DBG: restoring data at 0x%llx from  0x%lx to 0x%lx\n", address, curr_data, data);
     assert((data&0xFFFFFFFFFFFFFF00) == (curr_data & 0xFFFFFFFFFFFFFF00));
     
     unsigned long data_trap = (curr_data & 0xFFFFFFFFFFFFFF00) | 0xCC;
@@ -52,7 +52,6 @@ unsigned long RemoveBreakpoint(Elf64_Addr address, unsigned long data){
     
     return data;
 }
-
 
 ReturnVal Break(unsigned long address){
     assert(address > 0);
@@ -74,7 +73,6 @@ ReturnVal Break(unsigned long address){
     
 }
 
-
 int singleStep(){
     int wait_status;
     if (ptrace(PTRACE_SINGLESTEP, program_pid, NULL, NULL) < 0) {
@@ -90,6 +88,20 @@ struct user_regs_struct Regs(){
     struct user_regs_struct regs;
     ptrace(PTRACE_GETREGS, program_pid, 0, &regs);
     return regs;
+}
+
+void waitFor(unsigned long addr){
+    unsigned long curr_addr = Regs().rip;
+    
+    waitpid(program_pid, &wait_status,0);
+    while (WIFSTOPPED(wait_status) && curr_addr != addr){
+        waitpid(program_pid, &wait_status,0);
+        curr_addr = Regs().rip;
+    }
+    if (!WIFSTOPPED(wait_status)){
+        printf("ENDED****************\n");
+        exit(1);
+    }
 }
 
 
@@ -112,9 +124,9 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
     unsigned long ret_instruction = 0;
     unsigned long instruction = AddBreakpoint(func_address);
     printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
-    ptrace(PTRACE_CONT, program_pid, NULL, NULL);
-    waitpid(program_pid, &wait_status,0);
-    
+    //ptrace(PTRACE_CONT, program_pid, NULL, NULL);
+    //waitpid(program_pid, &wait_status,0);
+    waitFor(func_address);
     while (WIFSTOPPED(wait_status)){
         printf("debug:: ====== iteration %d ======\n", call_counter);
         
@@ -132,8 +144,9 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
     
     
         /// get return value of function
-        ptrace(PTRACE_CONT, program_pid, NULL, NULL);
-        waitpid(program_pid, &wait_status,0);
+        //ptrace(PTRACE_CONT, program_pid, NULL, NULL);
+        //waitpid(program_pid, &wait_status,0);
+        waitFor(ret_address);
         //assert(!WIFEXITED(wait_status)); /// function should return to the calling address
         //ptrace(PTRACE_GETREGS, program_pid, 0, &regs);
         int ret_value = Regs().rax & 0x00000000FFFFFFFF;
@@ -148,8 +161,9 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         RemoveBreakpoint(ret_address, ret_instruction);
         printf("debug:: ret breakpoint removed\n");
         
-        ptrace(PTRACE_CONT, program_pid, NULL, NULL);
-        waitpid(program_pid, &wait_status,0);
+        //ptrace(PTRACE_CONT, program_pid, NULL, NULL);
+        //waitpid(program_pid, &wait_status,0);
+        wait_status(func_address);
         
         
         call_counter++;
