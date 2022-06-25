@@ -6,6 +6,7 @@
 #include "stdio.h"
 #include "sys/wait.h"
 #include "sys/types.h"
+#include <sys/reg.h>
 
 #include "assert.h"
 
