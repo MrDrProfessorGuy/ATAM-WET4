@@ -76,6 +76,7 @@ Elf64_Shdr get_section_header(const ElfFile elf_file, Elf64_Ehdr elf_header, cha
         }
         section_header = NextSH(section_header, sh_size);
     }
+    printf("get_section_header:: %s, found at index 0x%lx\n", sh_name, section_header);
     
     Elf64_Shdr b = *section_header;
     
@@ -95,7 +96,7 @@ int readSymtab(const ElfFile elf_file, Elf64_Shdr symtab_sh, char* sym_name, Elf
     
     
     Elf64_Word sym_name_index = get_str_index(elf_file, sh_strtab.sh_offset, sh_strtab.sh_size, sym_name);;
-    printf("get_section_header:: %s, found at index %u\n", sym_name, sym_name_index);
+    printf("readSymtab:: %s, found at index %u\n", sym_name, sym_name_index);
     if (sym_name_index == NAME_NOT_FOUND){
         return NAME_NOT_FOUND;
     }
