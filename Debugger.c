@@ -90,40 +90,40 @@ struct user_regs_struct Regs(){
 
 int singleStep(){
     int wait_status;
-    printf("singleStep:: brfore: 0x%lx", Regs().rip-1);
+    //printf("singleStep:: brfore: 0x%lx", Regs().rip-1);
     
     if (ptrace(PTRACE_SINGLESTEP, program_pid, NULL, NULL) < 0) {
-        perror("ptrace");
+        //perror("ptrace");
         exit(1);
     }
     waitpid(program_pid, &wait_status,0);
-    printf("   after: 0x%lx\n", Regs().rip-1);
+    //printf("   after: 0x%lx\n", Regs().rip-1);
     return wait_status;
 }
 
 
 void waitFor(unsigned long addr){
     int wait_status;
-    printf(" ========== waitFor ==========\n");
+    //printf(" ========== waitFor ==========\n");
     
     ptrace(PTRACE_CONT, program_pid, NULL, NULL);
     waitpid(program_pid, &wait_status,0);
     unsigned long curr_addr = Regs().rip-1;
-    printf("waitFor:: addr: 0x%lx curr_addr: 0x%lx\n", addr, curr_addr);
+    //printf("waitFor:: addr: 0x%lx curr_addr: 0x%lx\n", addr, curr_addr);
     while (curr_addr != addr){
         if (!WIFSTOPPED(wait_status)){
-            printf("ENDED****************\n");
+            //printf("ENDED****************\n");
             exit(1);
         }
         ptrace(PTRACE_CONT, program_pid, NULL, NULL);
         waitpid(program_pid, &wait_status,0);
         curr_addr = Regs().rip-1;
-        printf("waitFor:: addr: 0x%lx curr_addr: 0x%lx\n", addr, curr_addr);
+        //printf("waitFor:: addr: 0x%lx curr_addr: 0x%lx\n", addr, curr_addr);
     }
     
 
     
-    printf(" ===========================\n");
+    //printf(" ===========================\n");
     
 }
 
@@ -136,13 +136,13 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
     
     
     
-    printf("debug:: program_name: %s,   func_address: %lx\n", program_name, func_address);
+    //printf("debug:: program_name: %s,   func_address: %lx\n", program_name, func_address);
     
     program_pid = run_target(program_name, program_arguments);
     if (program_pid == ForkError){
         return ForkError;
     }
-    printf("debug:: program_pid: %d\n", program_pid);
+    //printf("debug:: program_pid: %d\n", program_pid);
     
     
     /// Add breakPoint at function
@@ -150,10 +150,10 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
     unsigned long instruction = 0;
     
     do{
-        printf("debug:: ====== iteration %d ======\n", call_counter);
+       // printf("debug:: ====== iteration %d ======\n", call_counter);
         
         instruction = AddBreakpoint(func_address);
-        printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
+        //printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
         waitFor(func_address);
     
         
@@ -162,11 +162,11 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         regs = Regs();
         regs.rip -= 1;
         ptrace(PTRACE_SETREGS, program_pid, 0, &regs);
-        printf("debug:: function breakpoint removed\n");
+        //printf("debug:: function breakpoint removed\n");
         /// add breakpoint at function return address
         ret_address = ptrace(PTRACE_PEEKTEXT, program_pid, Regs().rsp, NULL);
         ret_instruction = AddBreakpoint(ret_address);
-        printf("debug:: ret_address: 0x%lx,   ret_instruction: 0x%lx\n", ret_address, ret_instruction);
+        //printf("debug:: ret_address: 0x%lx,   ret_instruction: 0x%lx\n", ret_address, ret_instruction);
         
         
         /// get return value of function
@@ -179,7 +179,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         regs = Regs();
         regs.rip -= 1;
         ptrace(PTRACE_SETREGS, program_pid, 0, &regs);
-        printf("debug:: function breakpoint removed\n");
+        //printf("debug:: function breakpoint removed\n");
         
         call_counter++;
     
@@ -197,13 +197,13 @@ ReturnVal debug2(const char* program_name, char* program_arguments, unsigned lon
     unsigned long ret_address = 0;
     struct user_regs_struct regs;
     
-    printf("debug:: program_name: %s,   func_address: %lx\n", program_name, func_address);
+    //printf("debug:: program_name: %s,   func_address: %lx\n", program_name, func_address);
     
     program_pid = run_target(program_name, program_arguments);
     if (program_pid == ForkError){
         return ForkError;
     }
-    printf("debug:: program_pid: %d\n", program_pid);
+    //printf("debug:: program_pid: %d\n", program_pid);
     waitpid(program_pid, &wait_status,0);
     
     /// Add breakPoint at function
@@ -215,18 +215,18 @@ ReturnVal debug2(const char* program_name, char* program_arguments, unsigned lon
     waitFor(func_address);
     
     while (WIFSTOPPED(wait_status)){
-        printf("debug:: ====== iteration %d ======\n", call_counter);
+        //printf("debug:: ====== iteration %d ======\n", call_counter);
         
         /// add breakpoint at function return address
         ret_address = ptrace(PTRACE_PEEKTEXT, program_pid, Regs().rsp, NULL);
         ret_instruction = AddBreakpoint(ret_address);
-        printf("debug:: ret_address: 0x%lx,   ret_instruction: 0x%lx\n", ret_address, ret_instruction);
+        //printf("debug:: ret_address: 0x%lx,   ret_instruction: 0x%lx\n", ret_address, ret_instruction);
         
         /// remove breakpoint from function
         
         //assert(!WIFEXITED(wait_status));
         RemoveBreakpoint(func_address, instruction);
-        printf("debug:: function breakpoint removed\n");
+        //printf("debug:: function breakpoint removed\n");
         //wait_status = singleStep();
     
     
@@ -241,12 +241,12 @@ ReturnVal debug2(const char* program_name, char* program_arguments, unsigned lon
     
         /// Add breakPoint at function
         instruction = AddBreakpoint(func_address);
-        printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
+        //printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
     
         //wait_status = singleStep();
         //assert(!WIFEXITED(wait_status));
         RemoveBreakpoint(ret_address, ret_instruction);
-        printf("debug:: ret breakpoint removed\n");
+        //printf("debug:: ret breakpoint removed\n");
         
         //ptrace(PTRACE_CONT, program_pid, NULL, NULL);
         //waitpid(program_pid, &wait_status,0);
