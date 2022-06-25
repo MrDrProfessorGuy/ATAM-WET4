@@ -114,6 +114,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
     waitpid(program_pid, &wait_status,0);
     while (WIFSTOPPED(wait_status)){
         printf("debug:: ====== iteration %d ======\n", call_counter);
+        
         /// add breakpoint at function return address
         //ptrace(PTRACE_GETREGS, program_pid, 0, &regs);
         ret_address = ptrace(PTRACE_PEEKTEXT, program_pid, Regs().rsp, NULL);
@@ -140,6 +141,9 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         printf("debug:: breaking at function: %lx,  instruction: %lx\n", func_address, instruction);
         ptrace(PTRACE_CONT, program_pid, NULL, NULL);
         waitpid(program_pid, &wait_status,0);
+        
+        
+        call_counter++;
     }
     
     
