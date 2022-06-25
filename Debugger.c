@@ -149,7 +149,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         waitFor(ret_address);
         //assert(!WIFEXITED(wait_status)); /// function should return to the calling address
         //ptrace(PTRACE_GETREGS, program_pid, 0, &regs);
-        int ret_value = Regs().rax & 0x00000000FFFFFFFF;
+        long ret_value = Regs().rax;
         printf("PRF:: call %u at 0x%lx returned with %d\n", call_counter, Regs().rip, (int)ret_value);
     
         /// Add breakPoint at function
