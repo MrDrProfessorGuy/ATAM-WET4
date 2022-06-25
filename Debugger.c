@@ -110,6 +110,8 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
     /// Add breakPoint at function
     unsigned long instruction = AddBreakpoint(func_address);
     printf("debug:: breaking at function: %lx,  instruction: %lx\n", func_address, instruction);
+    RemoveBreakpoint(func_address, instruction);
+    instruction = AddBreakpoint(func_address);
     ptrace(PTRACE_CONT, program_pid, NULL, NULL);
     waitpid(program_pid, &wait_status,0);
     while (WIFSTOPPED(wait_status)){
