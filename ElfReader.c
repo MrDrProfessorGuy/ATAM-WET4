@@ -54,7 +54,7 @@ Elf64_Shdr get_section_header(const ElfFile elf_file, Elf64_Ehdr elf_header, cha
     Elf64_Half sh_num = elf_header.e_shnum;
     Elf64_Half sh_strtbl_idx = elf_header.e_shstrndx;
     
-    Elf64_Shdr* sh_table_start = elf_file + sh_offset;
+    Elf64_Shdr* sh_table_start = FileOffset(Elf64_Shdr*, elf_file, sh_offset);
 
     
     Elf64_Off sh_strtbl_off = sh_table_start[sh_strtbl_idx].sh_offset;

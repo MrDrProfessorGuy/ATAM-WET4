@@ -18,6 +18,7 @@
 #define MAXLENGTH 128
 #define SHT_STRTAB 0x03
 
+
 void End(ElfFile file, int fd);
 
 Elf64_Shdr get_section_str_table(Elf64_Ehdr elf_header,int fd){
