@@ -3,9 +3,11 @@ int main(int argc, char** argv)
 {
   
   if(argc != 5)
+      printf("returned 1");
     return 1;
   if(*(*(argv+1)) == 'D')
   {
+      printf("arg[1]: %d\n", *(*(argv+1)));
      foo();
   }
   for(int i = 0; i < argc; i++)
