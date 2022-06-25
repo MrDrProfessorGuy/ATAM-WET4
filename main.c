@@ -22,7 +22,7 @@ int main(int argc,char* argv[]) {
     for (int i = 2; i < argc-2; i++) {
         program_arguments[i] = argv[i];
     }
-    program_arguments[argc-2]
+    program_arguments[argc-2];
     
     Elf64_Ehdr elf_header;
     void* elf_file = NULL;
