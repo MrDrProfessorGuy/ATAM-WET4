@@ -153,10 +153,11 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         printf("debug:: ret_address: 0x%lx,   ret_instruction: 0x%lx\n", ret_address, ret_instruction);
         
         /// remove breakpoint from function
-        wait_status = singleStep();
+        
         //assert(!WIFEXITED(wait_status));
         RemoveBreakpoint(func_address, instruction);
         printf("debug:: function breakpoint removed\n");
+        wait_status = singleStep();
     
     
         /// get return value of function
