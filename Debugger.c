@@ -91,6 +91,7 @@ struct user_regs_struct Regs(){
 }
 
 void waitFor(unsigned long addr){
+    int wait_status;
     unsigned long curr_addr = Regs().rip;
     
     waitpid(program_pid, &wait_status,0);
