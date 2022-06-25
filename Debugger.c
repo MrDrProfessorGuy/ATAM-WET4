@@ -39,11 +39,11 @@ unsigned long AddBreakpoint(Elf64_Addr address){
     
     
     unsigned long data_trap = (data & 0xFFFFFFFFFFFFFF00) | 0xCC;
-    printf("DBG: Original data at 0x%llx: 0x%lx,    trap: 0x%lx\n", address, data, data_trap);
+    //printf("DBG: Original data at 0x%llx: 0x%lx,    trap: 0x%lx\n", address, data, data_trap);
     ptrace(PTRACE_POKETEXT, program_pid, (void*)address, (void*)data_trap);
     
     unsigned long data2 = ptrace(PTRACE_PEEKTEXT, program_pid, (void*)address, NULL);
-    printf("DBG: altered data at 0x%llx: 0x%lx\n", address, data2);
+    //printf("DBG: altered data at 0x%llx: 0x%lx\n", address, data2);
     assert(data2 == data_trap);
     
     return data;
@@ -120,6 +120,9 @@ void waitFor(unsigned long addr){
         curr_addr = Regs().rip-1;
         printf("waitFor:: addr: 0x%lx curr_addr: 0x%lx\n", addr, curr_addr);
     }
+    
+
+    
     printf(" ===========================\n");
     
 }
@@ -130,6 +133,8 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
     unsigned int call_counter = 0;
     unsigned long ret_address = 0;
     struct user_regs_struct regs;
+    
+    
     
     printf("debug:: program_name: %s,   func_address: %lx\n", program_name, func_address);
     
@@ -154,6 +159,9 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         
         /// remove breakpoint from function
         RemoveBreakpoint(func_address, instruction);
+        regs = Regs();
+        regs.rip -= 1;
+        ptrace(PTRACE_SETREGS, program_pid, 0, &regs);
         printf("debug:: function breakpoint removed\n");
         /// add breakpoint at function return address
         ret_address = ptrace(PTRACE_PEEKTEXT, program_pid, Regs().rsp, NULL);
@@ -165,8 +173,17 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         waitFor(ret_address);
         long ret_value = Regs().rax;
         printf("PRF:: call %u at 0x%lx returned with %d\n", call_counter, Regs().rip-1, (int)ret_value);
+    
+        /// remove breakpoint from function
+        RemoveBreakpoint(ret_address, instruction);
+        regs = Regs();
+        regs.rip -= 1;
+        ptrace(PTRACE_SETREGS, program_pid, 0, &regs);
+        printf("debug:: function breakpoint removed\n");
         
         call_counter++;
+    
+        waitFor(func_address);
     }while (WIFSTOPPED(wait_status));
     
     
