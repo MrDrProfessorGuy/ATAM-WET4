@@ -23,6 +23,6 @@ Elf64_Shdr get_section_header(const ElfFile elf_file, Elf64_Ehdr elf_header, cha
 int readSymtab(const ElfFile elf_file, Elf64_Shdr symtab_sh, char* sym_name, Elf64_Sym* func_sym);
 
 Elf64_Addr getVirtualAddress(const ElfFile elf_file, Elf64_Off file_offset);
-
+int readRelaSym(const ElfFile elf_file, Elf64_Shdr sh_rela, char* sym_name, Elf64_Addr* func_address);
 
 #endif //ATAM_WET4_ELFREADER_H

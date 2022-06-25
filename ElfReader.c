@@ -9,6 +9,7 @@
 #define NextSH(sh, size) ((Elf64_Shdr*) ((char*)sh + size))
 #define NextPH(ph, size) ((Elf64_Phdr*) ((char*)ph + size))
 #define NextSym(sym, size) ((Elf64_Sym*) ((char*)sym + size))
+#define NextRelaSym(relasym, size) ((Elf64_Rel*) ((char*)relasym + size))
 #define FileOffset(cast, file, offset) ((cast) ((char*)file + offset))
 
 int isExecutable(Elf64_Ehdr elf_header){
@@ -87,19 +88,15 @@ Elf64_Shdr get_section_header(const ElfFile elf_file, Elf64_Ehdr elf_header, cha
 int readSymtab(const ElfFile elf_file, Elf64_Shdr symtab_sh, char* sym_name, Elf64_Sym* func_sym){
     Elf64_Xword symtable_size = symtab_sh.sh_size;
     Elf64_Xword sym_size = symtab_sh.sh_entsize;
+    if (sym_size == 0){
+        return NAME_NOT_FOUND;
+    }
     Elf64_Xword sym_num = symtable_size/sym_size;
     
     assert(symtable_size%sym_size == 0);
     
     Elf64_Shdr sh_strtab = get_section_header(elf_file, getElfHeader(elf_file), NULL, symtab_sh.sh_link);
     
-    
-    /*
-    Elf64_Word sym_name_index = get_str_index(elf_file, sh_strtab.sh_offset, sh_strtab.sh_size, sym_name);
-    printf("readSymtab:: %s, found at index %u\n", sym_name, sym_name_index);
-    if (sym_name_index == NAME_NOT_FOUND){
-        return NAME_NOT_FOUND;
-    }*/
     
     Elf64_Sym* symbol = FileOffset(Elf64_Sym*, elf_file, symtab_sh.sh_offset);
     for (Elf64_Xword index = 0; index < sym_num; index++) {
@@ -116,7 +113,6 @@ int readSymtab(const ElfFile elf_file, Elf64_Shdr symtab_sh, char* sym_name, Elf
     
     return NAME_NOT_FOUND;
 }
-
 
 Elf64_Addr getVirtualAddress(const ElfFile elf_file, Elf64_Off file_offset){
     Elf64_Ehdr elf_header = getElfHeader(elf_file);
@@ -138,7 +134,33 @@ Elf64_Addr getVirtualAddress(const ElfFile elf_file, Elf64_Off file_offset){
     return NULL;
 }
 
-
+int readRelaSym(const ElfFile elf_file, Elf64_Shdr sh_rela, char* sym_name, Elf64_Addr* func_address){
+    Elf64_Xword symtable_size = sh_rela.sh_size;
+    Elf64_Xword sym_size = sh_rela.sh_entsize;
+    if (sym_size == 0){
+        return NAME_NOT_FOUND;
+    }
+    Elf64_Xword sym_num = symtable_size/sym_size;
+    
+    assert(symtable_size%sym_size == 0);
+    
+    Elf64_Shdr sh_dynsym = get_section_header(elf_file, getElfHeader(elf_file), NULL, sh_rela.sh_link);
+    
+    
+    Elf64_Rel* symbol = FileOffset(Elf64_Rel*, elf_file, sh_rela.sh_offset);
+    for (Elf64_Xword index = 0; index < sym_num; index++) {
+        
+        char* sym_str = FileOffset(void*, elf_file,(sh_dynsym.sh_offset+ELF64_R_SYM(symbol->r_info)));
+        if (strcmp(sym_str, sym_name) == 0){
+            *func_address = getVirtualAddress(elf_file, (Elf64_Off)symbol);
+            return SYM_FOUND;
+        }
+        
+        symbol = NextRelaSym(symbol, sym_size);
+    }
+    
+    return NAME_NOT_FOUND;
+}
 
 
 

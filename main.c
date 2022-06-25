@@ -10,7 +10,7 @@
 #include "Debugger.h"
 
 
-
+#include "assert.h"
 
 void End(ElfFile file, int fd);
 
@@ -53,6 +53,14 @@ int main(int argc,char* argv[]) {
     }
     if (func_sym.st_shndx == STB_UND){
         printf("%s is Undefined! Need to determine on runtime\n", function_name);
+        Elf64_Shdr sh_rela_plt = get_section_header(elf_file, elf_header, ".rela.plt", 0);
+        Elf64_Addr func_address = 0;
+        res = readRelaSym(elf_file, sh_rela_plt, function_name, &func_address);
+        assert(res != NAME_NOT_FOUND);
+        if (res == NAME_NOT_FOUND){
+            End(elf_file, fd);
+        }
+        printf("PRF:: Dynamic - %s plt is at address: 0x%llx", function_name, func_address);
     }
 
     debug(program_name, program_arguments, func_sym.st_value);
