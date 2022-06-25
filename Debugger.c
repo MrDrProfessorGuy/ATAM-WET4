@@ -134,13 +134,11 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         return ForkError;
     }
     printf("debug:: program_pid: %d\n", program_pid);
-    waitpid(program_pid, &wait_status,0);
+    
     
     /// Add breakPoint at function
     unsigned long ret_instruction = 0;
-    unsigned long instruction = AddBreakpoint(func_address);
-    printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
-    waitFor(func_address);
+    unsigned long instruction = 0;
     
     do{
         printf("debug:: ====== iteration %d ======\n", call_counter);
