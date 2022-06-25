@@ -18,7 +18,11 @@ void End(ElfFile file, int fd);
 int main(int argc,char* argv[]) {
     char* function_name = argv[1];
     char* program_name = argv[2];
-    char** program_arguments = argv+2;
+    char* program_arguments[argc-1];
+    for (int i = 2; i < argc-2; i++) {
+        program_arguments[i] = argv[i];
+    }
+    program_arguments[argc-2]
     
     Elf64_Ehdr elf_header;
     void* elf_file = NULL;
