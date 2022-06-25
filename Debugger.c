@@ -22,7 +22,7 @@ pid_t run_target(const char* program_name, char* program_arguments){
         return pid;
     }
     else if (pid == 0){ /// user program
-        if (ptrace(PT_TRACE_ME, 0, NULL, NULL) < 0){
+        if (ptrace(PTRACE_TRACEME, 0, NULL, NULL) < 0){
             exit(1);
         }
         execl(program_name, program_name, program_arguments, NULL);
