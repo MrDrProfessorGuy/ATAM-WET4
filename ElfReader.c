@@ -118,10 +118,11 @@ Elf64_Addr getVirtualAddress(const ElfFile elf_file, Elf64_Off file_offset){
     Elf64_Phdr* ph = FileOffset(Elf64_Phdr*, elf_file, elf_header.e_phoff);
     Elf64_Half ph_num = elf_header.e_phnum;
     Elf64_Half ph_size = elf_header.e_phentsize;
+    printf("getVirtualAddress:: func_offset: %llx,\n", file_offset);
     
     for (Elf64_Half index = 0; index < ph_num; index++){
         Elf64_Off offset = ph->p_offset;
-        printf("getVirtualAddress:: Segment: %llx,   Type: %u,    size: %llx\n", offset, ph->p_type, ph->p_filesz);
+        printf("getVirtualAddress:: Segment: 0x%llx,   Type: 0x%u,    size: 0x%llx,    segment_end: 0x%llx\n", offset, ph->p_type, ph->p_filesz, offset+ph->p_filesz);
     
         if (offset <= file_offset && file_offset < offset + ph->p_filesz ){
             return ph->p_vaddr + (file_offset - offset);
