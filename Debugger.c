@@ -126,7 +126,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         
         /// remove breakpoint from function
         wait_status = singleStep();
-        assert(WIFEXITED(wait_status));
+        assert(!WIFEXITED(wait_status));
         RemoveBreakpoint(func_address, instruction);
         printf("debug:: function breakpoint removed\n");
     
@@ -134,7 +134,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         /// get return value of function
         ptrace(PTRACE_CONT, program_pid, NULL, NULL);
         waitpid(program_pid, &wait_status,0);
-        assert(WIFEXITED(wait_status)); /// function should return to the calling address
+        assert(!WIFEXITED(wait_status)); /// function should return to the calling address
         //ptrace(PTRACE_GETREGS, program_pid, 0, &regs);
         unsigned long ret_value = Regs().rax & 0x00000000FFFFFFFF;
         printf("PRF:: call %u returned with %d/n", call_counter, (int)ret_value);
