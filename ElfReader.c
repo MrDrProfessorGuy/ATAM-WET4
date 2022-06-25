@@ -38,7 +38,7 @@ Elf64_Word get_str_index(ElfFile file, Elf64_Off offset, Elf64_Xword size, char*
     
     Elf64_Word index = 0;
     Elf64_Word iter = 1;
-    while (iter < size && strcmp(&str_tbl[iter], name) == 0){
+    while (iter < size && strcmp(&str_tbl[iter], name) != 0){
         iter = next_str(str_tbl, iter);
         index++;
     };

@@ -1,7 +1,6 @@
 file(REMOVE_RECURSE
   "ATAM_WET4"
   "ATAM_WET4.pdb"
-  "CMakeFiles/ATAM_WET4.dir/Debugger.c.o"
   "CMakeFiles/ATAM_WET4.dir/ElfReader.c.o"
   "CMakeFiles/ATAM_WET4.dir/ReadLib.c.o"
   "CMakeFiles/ATAM_WET4.dir/main.c.o"

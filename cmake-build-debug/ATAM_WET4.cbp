@@ -76,12 +76,6 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/Debugger.c">
-			<Option target="ATAM_WET4"/>
-		</Unit>
-		<Unit filename="/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/Debugger.h">
-			<Option target="ATAM_WET4"/>
-		</Unit>
 		<Unit filename="/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/ElfReader.c">
 			<Option target="ATAM_WET4"/>
 		</Unit>

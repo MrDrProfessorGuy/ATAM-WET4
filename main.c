@@ -70,6 +70,7 @@ int main(int argc,char* argv[]) {
     
     Elf64_Shdr symtab = get_section_header(elf_file, elf_header, ".symtab", 0);
     Elf64_Sym func_sym;
+    
     int res = readSymtab(elf_file, symtab, "foo", &func_sym);
     if (res == NAME_NOT_FOUND){
         printf("PRF:: %s not found!\n", function_name);
