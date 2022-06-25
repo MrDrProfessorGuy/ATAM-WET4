@@ -137,11 +137,11 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         //assert(!WIFEXITED(wait_status)); /// function should return to the calling address
         //ptrace(PTRACE_GETREGS, program_pid, 0, &regs);
         unsigned long ret_value = Regs().rax & 0x00000000FFFFFFFF;
-        printf("PRF:: call %u returned with %d/n", call_counter, (int)ret_value);
+        printf("PRF:: call %u returned with 0x%d\n", call_counter, (int)ret_value);
     
         /// Add breakPoint at function
         unsigned long instruction = AddBreakpoint(func_address);
-        printf("debug:: breaking at function: %lx,  instruction: %lx\n", func_address, instruction);
+        printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
         ptrace(PTRACE_CONT, program_pid, NULL, NULL);
         waitpid(program_pid, &wait_status,0);
         
