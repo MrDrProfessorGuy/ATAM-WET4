@@ -140,6 +140,57 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
     unsigned long ret_instruction = 0;
     unsigned long instruction = AddBreakpoint(func_address);
     printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
+    waitFor(func_address);
+    
+    do{
+        printf("debug:: ====== iteration %d ======\n", call_counter);
+        
+        instruction = AddBreakpoint(func_address);
+        printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
+        waitFor(func_address);
+    
+        
+        /// remove breakpoint from function
+        RemoveBreakpoint(func_address, instruction);
+        printf("debug:: function breakpoint removed\n");
+        /// add breakpoint at function return address
+        ret_address = ptrace(PTRACE_PEEKTEXT, program_pid, Regs().rsp, NULL);
+        ret_instruction = AddBreakpoint(ret_address);
+        printf("debug:: ret_address: 0x%lx,   ret_instruction: 0x%lx\n", ret_address, ret_instruction);
+        
+        
+        /// get return value of function
+        waitFor(ret_address);
+        long ret_value = Regs().rax;
+        printf("PRF:: call %u at 0x%lx returned with %d\n", call_counter, Regs().rip-1, (int)ret_value);
+        
+        call_counter++;
+    }while (WIFSTOPPED(wait_status));
+    
+    
+    
+    
+}
+
+ReturnVal debug2(const char* program_name, char* program_arguments, unsigned long func_address){
+    int wait_status;
+    unsigned int call_counter = 0;
+    unsigned long ret_address = 0;
+    struct user_regs_struct regs;
+    
+    printf("debug:: program_name: %s,   func_address: %lx\n", program_name, func_address);
+    
+    program_pid = run_target(program_name, program_arguments);
+    if (program_pid == ForkError){
+        return ForkError;
+    }
+    printf("debug:: program_pid: %d\n", program_pid);
+    waitpid(program_pid, &wait_status,0);
+    
+    /// Add breakPoint at function
+    unsigned long ret_instruction = 0;
+    unsigned long instruction = AddBreakpoint(func_address);
+    printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
     //ptrace(PTRACE_CONT, program_pid, NULL, NULL);
     //waitpid(program_pid, &wait_status,0);
     waitFor(func_address);
@@ -185,9 +236,6 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         
         call_counter++;
     }
-    
-    
-    
     
 }
 
