@@ -46,7 +46,7 @@ unsigned long RemoveBreakpoint(Elf64_Addr address, unsigned long data){
     //printf("DBG: restoring data at 0x%llx from  0x%lx to 0x%lx\n", address, curr_data, data);
     assert((data&0xFFFFFFFFFFFFFF00) == (curr_data & 0xFFFFFFFFFFFFFF00));
     
-    unsigned long data_trap = (curr_data & 0xFFFFFFFFFFFFFF00) | 0xCC;
+    //unsigned long data_trap = (curr_data & 0xFFFFFFFFFFFFFF00) | data;
     ptrace(PTRACE_POKETEXT, program_pid, (void*)address, (void*)data);
     
     
@@ -73,22 +73,25 @@ ReturnVal Break(unsigned long address){
     
 }
 
-int singleStep(){
-    int wait_status;
-    if (ptrace(PTRACE_SINGLESTEP, program_pid, NULL, NULL) < 0) {
-        perror("ptrace");
-        exit(1);
-    }
-    
-    waitpid(program_pid, &wait_status,0);
-    return wait_status;
-}
-
 struct user_regs_struct Regs(){
     struct user_regs_struct regs;
     ptrace(PTRACE_GETREGS, program_pid, 0, &regs);
     return regs;
 }
+
+int singleStep(){
+    int wait_status;
+    printf("singleStep:: brfore: 0x%lx", Regs().rip-1);
+    
+    if (ptrace(PTRACE_SINGLESTEP, program_pid, NULL, NULL) < 0) {
+        perror("ptrace");
+        exit(1);
+    }
+    printf("   after: 0x%lx\n", Regs().rip-1);
+    waitpid(program_pid, &wait_status,0);
+    return wait_status;
+}
+
 
 void waitFor(unsigned long addr){
     int wait_status;
@@ -135,11 +138,11 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
     //ptrace(PTRACE_CONT, program_pid, NULL, NULL);
     //waitpid(program_pid, &wait_status,0);
     waitFor(func_address);
+    
     while (WIFSTOPPED(wait_status)){
         printf("debug:: ====== iteration %d ======\n", call_counter);
         
         /// add breakpoint at function return address
-        //ptrace(PTRACE_GETREGS, program_pid, 0, &regs);
         ret_address = ptrace(PTRACE_PEEKTEXT, program_pid, Regs().rsp, NULL);
         ret_instruction = AddBreakpoint(ret_address);
         printf("debug:: ret_address: 0x%lx,   ret_instruction: 0x%lx\n", ret_address, ret_instruction);
