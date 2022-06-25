@@ -92,11 +92,12 @@ struct user_regs_struct Regs(){
 
 void waitFor(unsigned long addr){
     int wait_status;
+    printf(" ========== waitFor ==========\n");
     
     ptrace(PTRACE_CONT, program_pid, NULL, NULL);
     waitpid(program_pid, &wait_status,0);
     unsigned long curr_addr = Regs().rip;
-    
+    printf("waitFor:: addr: 0x%lx curr_addr: 0x%lx\n", addr, curr_addr);
     while (curr_addr != addr){
         if (!WIFSTOPPED(wait_status)){
             printf("ENDED****************\n");
@@ -105,7 +106,9 @@ void waitFor(unsigned long addr){
         ptrace(PTRACE_CONT, program_pid, NULL, NULL);
         waitpid(program_pid, &wait_status,0);
         curr_addr = Regs().rip;
+        printf("waitFor:: addr: 0x%lx curr_addr: 0x%lx\n", addr, curr_addr);
     }
+    printf(" ===========================\n");
     
 }
 
