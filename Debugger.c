@@ -157,7 +157,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         //assert(!WIFEXITED(wait_status));
         RemoveBreakpoint(func_address, instruction);
         printf("debug:: function breakpoint removed\n");
-        wait_status = singleStep();
+        //wait_status = singleStep();
     
     
         /// get return value of function
@@ -173,7 +173,7 @@ ReturnVal debug(const char* program_name, char* program_arguments, unsigned long
         instruction = AddBreakpoint(func_address);
         printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
     
-        wait_status = singleStep();
+        //wait_status = singleStep();
         //assert(!WIFEXITED(wait_status));
         RemoveBreakpoint(ret_address, ret_instruction);
         printf("debug:: ret breakpoint removed\n");
