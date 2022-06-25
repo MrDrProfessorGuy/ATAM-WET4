@@ -3,7 +3,7 @@ int main(int argc, char** argv)
 {
   
   if(argc != 5)
-      printf("returned 1");
+      printf("argc: %d,    returned 1", argc);
     return 1;
   if(*(*(argv+1)) == 'D')
   {
