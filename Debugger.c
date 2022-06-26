@@ -12,6 +12,7 @@
 
 
 enum OP{Add, Remove};
+typedef enum Redirection{Normal, PLT} Redirection;
 
 static pid_t program_pid = 0;
 
@@ -132,7 +133,7 @@ int waitFor(unsigned long addr){
 }
 
 
-ReturnVal debug(const char* program_name, char* program_arguments[], unsigned long func_address){
+ReturnVal debug(const char* program_name, char* program_arguments[], unsigned long func_address, Redirection redirection){
     int wait_status;
     unsigned int call_counter = 1;
     unsigned long ret_address = 0;
@@ -152,6 +153,9 @@ ReturnVal debug(const char* program_name, char* program_arguments[], unsigned lo
     unsigned long ret_instruction = 0;
     unsigned long instruction = 0;
     
+    if (redirection == PLT){
+        func_address = *func_address;
+    }
     /// Add breakPoint at function
     instruction = AddBreakpoint(func_address);
     //printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
@@ -159,7 +163,9 @@ ReturnVal debug(const char* program_name, char* program_arguments[], unsigned lo
     
     while (WIFSTOPPED(wait_status)){
        // printf("debug:: ====== iteration %d ======\n", call_counter);
-       
+        if (redirection == PLT && call_counter == 1){
+            func_address = *func_address;
+        }
         /// remove breakpoint from function
         RemoveBreakpoint(func_address, instruction);
         //printf("debug:: function breakpoint removed\n");

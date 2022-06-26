@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/Debugger.h
+elf64.h
+/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/elf64.h
+
 /Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/ElfReader.c
 ElfReader.h
 /Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/ElfReader.h
@@ -22,7 +26,33 @@ stdio.h
 elf64.h
 /Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/elf64.h
 
+/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/ReadLib.h
+elf64.h
+/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/elf64.h
+
 /Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/elf64.h
 stdint.h
 -
+
+/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/main.c
+stdio.h
+-
+elf64.h
+/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/elf64.h
+fcntl.h
+-
+sys/mman.h
+-
+stdlib.h
+-
+string.h
+-
+ReadLib.h
+/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/ReadLib.h
+ElfReader.h
+/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/ElfReader.h
+Debugger.h
+/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/Debugger.h
+assert.h
+/Users/guycohen/Library/CloudStorage/OneDrive-Technion/1 Courses/Computer Organization And Programming/Homework/HW4/Wet/ATAM-WET4/assert.h
 
