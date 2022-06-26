@@ -142,13 +142,13 @@ ReturnVal debug(const char* program_name, char* program_arguments[], unsigned lo
     unsigned long function_GOT_entry = 0;
     
     
-    printf("debug:: program_name: %s,   func_address: 0x%lx\n", program_name, func_address);
+    //printf("debug:: program_name: %s,   func_address: 0x%lx\n", program_name, func_address);
     
     program_pid = run_target(program_name, program_arguments);
     if (program_pid == ForkError){
         return ForkError;
     }
-    printf("debug:: program_pid: %d\n", program_pid);
+    //printf("debug:: program_pid: %d\n", program_pid);
     
     
     unsigned long ret_instruction = 0;
@@ -159,7 +159,7 @@ ReturnVal debug(const char* program_name, char* program_arguments[], unsigned lo
         func_address = ptrace(PTRACE_PEEKTEXT, program_pid, function_GOT_entry, NULL);
     }
     /// Add breakPoint at function
-    printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
+    //printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
     instruction = AddBreakpoint(func_address);
     wait_status = waitFor(func_address);
     
@@ -173,7 +173,7 @@ ReturnVal debug(const char* program_name, char* program_arguments[], unsigned lo
         /// add breakpoint at function return address
         ret_address = ptrace(PTRACE_PEEKTEXT, program_pid, Regs().rsp, NULL);
         ret_instruction = AddBreakpoint(ret_address);
-        printf("debug:: ret_address: 0x%lx,   ret_instruction: 0x%lx\n", ret_address, ret_instruction);
+        //printf("debug:: ret_address: 0x%lx,   ret_instruction: 0x%lx\n", ret_address, ret_instruction);
         waitFor(ret_address);
         
         
@@ -189,11 +189,11 @@ ReturnVal debug(const char* program_name, char* program_arguments[], unsigned lo
         /// Add breakPoint at function
         if (redirection == PLT && call_counter == 1){
             func_address = ptrace(PTRACE_PEEKTEXT, program_pid, function_GOT_entry, NULL);
-            printf("debug:: new func address is at: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
+            //printf("debug:: new func address is at: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
         }
         instruction = AddBreakpoint(func_address);
         wait_status = waitFor(func_address);
-        printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
+        //printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
     
     }
     
