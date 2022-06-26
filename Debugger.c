@@ -166,11 +166,12 @@ ReturnVal debug(const char* program_name, char* program_arguments[], unsigned lo
     
     while (WIFSTOPPED(wait_status)){
        // printf("debug:: ====== iteration %d ======\n", call_counter);
+        
+        /// remove breakpoint from function
+        RemoveBreakpoint(func_address, instruction);
         if (redirection == PLT && call_counter == 1){
             func_address = ptrace(PTRACE_PEEKTEXT, program_pid, func_address, NULL);
         }
-        /// remove breakpoint from function
-        RemoveBreakpoint(func_address, instruction);
         //printf("debug:: function breakpoint removed\n");
         /// add breakpoint at function return address
         ret_address = ptrace(PTRACE_PEEKTEXT, program_pid, Regs().rsp, NULL);
