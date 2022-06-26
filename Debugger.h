@@ -12,10 +12,10 @@
 
 #define FORK_ERROR -1
 typedef enum ReturnVal {Success, ProgEnded, TraceError, ForkError} ReturnVal;
+typedef enum Redirection{Normal, PLT} Redirection;
 
 
-ReturnVal debug(const char* program_name, char* program_arguments[], unsigned long func_address);
-
+ReturnVal debug(const char* program_name, char* program_arguments[], unsigned long func_address, Redirection redirection);
 
 
 
