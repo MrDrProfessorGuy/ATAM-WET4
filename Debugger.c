@@ -52,7 +52,9 @@ unsigned long AddBreakpoint(Elf64_Addr address){
     
     unsigned long data2 = ptrace(PTRACE_PEEKTEXT, program_pid, (void*)address, NULL);
     printf("DBG: altered data at 0x%llx: 0x%lx\n", address, data2);
-    assert(data2 == data_trap);
+    if(data2 == data_trap){
+        exit(1);
+    }
     
     return data;
 }
