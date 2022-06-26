@@ -168,11 +168,7 @@ ReturnVal debug(const char* program_name, char* program_arguments[], unsigned lo
         
         /// remove breakpoint from function
         RemoveBreakpoint(func_address, instruction);
-        if (redirection == PLT && call_counter == 1){
-            func_address = ptrace(PTRACE_PEEKTEXT, program_pid, function_GOT_entry, NULL);
-            printf("debug:: new func address is at: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
-    
-        }
+        
         //printf("debug:: function breakpoint removed\n");
         /// add breakpoint at function return address
         ret_address = ptrace(PTRACE_PEEKTEXT, program_pid, Regs().rsp, NULL);
@@ -190,6 +186,10 @@ ReturnVal debug(const char* program_name, char* program_arguments[], unsigned lo
         
         call_counter++;
         /// Add breakPoint at function
+        if (redirection == PLT && call_counter == 1){
+            func_address = ptrace(PTRACE_PEEKTEXT, program_pid, function_GOT_entry, NULL);
+            printf("debug:: new func address is at: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
+        }
         instruction = AddBreakpoint(func_address);
         wait_status = waitFor(func_address);
         printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
