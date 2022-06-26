@@ -47,12 +47,12 @@ unsigned long AddBreakpoint(Elf64_Addr address){
     
     
     unsigned long data_trap = (data & 0xFFFFFFFFFFFFFF00) | 0xCC;
-    printf("DBG: Original data at 0x%llx: 0x%lx,    trap: 0x%lx\n", address, data, data_trap);
+    //printf("DBG: Original data at 0x%llx: 0x%lx,    trap: 0x%lx\n", address, data, data_trap);
     ptrace(PTRACE_POKETEXT, program_pid, (void*)address, (void*)data_trap);
     
     unsigned long data2 = ptrace(PTRACE_PEEKTEXT, program_pid, (void*)address, NULL);
-    printf("DBG: altered data at 0x%llx: 0x%lx\n", address, data2);
-    if(data2 == data_trap){
+    //printf("DBG: altered data at 0x%llx: 0x%lx\n", address, data2);
+    if(data2 != data_trap){
         exit(1);
     }
     
@@ -142,7 +142,7 @@ ReturnVal debug(const char* program_name, char* program_arguments[], unsigned lo
     
     
     
-    printf("debug:: program_name: %s,   func_address: %lx\n", program_name, func_address);
+    printf("debug:: program_name: %s,   func_address: 0x%lx\n", program_name, func_address);
     
     program_pid = run_target(program_name, program_arguments);
     if (program_pid == ForkError){

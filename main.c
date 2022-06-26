@@ -62,7 +62,7 @@ int main(int argc,char* argv[]) {
             End(elf_file, fd);
         }
         redirection = PLT;
-        printf("PRF:: Dynamic - %s plt is at address: 0x%llx", function_name, func_address);
+        printf("PRF:: Dynamic - %s plt is at address: 0x%llx\n", function_name, func_address);
     }
     else{
         func_address = func_sym.st_value;
