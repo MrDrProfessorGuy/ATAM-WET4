@@ -139,7 +139,7 @@ ReturnVal debug(const char* program_name, char* program_arguments[], unsigned lo
     unsigned int call_counter = 1;
     unsigned long ret_address = 0;
     struct user_regs_struct regs;
-    
+    unsigned long function_GOT_entry = 0;
     
     
     printf("debug:: program_name: %s,   func_address: 0x%lx\n", program_name, func_address);
@@ -155,9 +155,8 @@ ReturnVal debug(const char* program_name, char* program_arguments[], unsigned lo
     unsigned long instruction = 0;
     
     if (redirection == PLT){
-        //func_address = *(func_address);
-        func_address = ptrace(PTRACE_PEEKTEXT, program_pid, func_address, NULL);
-    
+        function_GOT_entry = func_address;
+        func_address = ptrace(PTRACE_PEEKTEXT, program_pid, function_GOT_entry, NULL);
     }
     /// Add breakPoint at function
     printf("debug:: breaking at function: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
@@ -170,7 +169,7 @@ ReturnVal debug(const char* program_name, char* program_arguments[], unsigned lo
         /// remove breakpoint from function
         RemoveBreakpoint(func_address, instruction);
         if (redirection == PLT && call_counter == 1){
-            func_address = ptrace(PTRACE_PEEKTEXT, program_pid, func_address, NULL);
+            func_address = ptrace(PTRACE_PEEKTEXT, program_pid, function_GOT_entry, NULL);
             printf("debug:: new func address is at: 0x%lx,  instruction: 0x%lx\n", func_address, instruction);
     
         }
