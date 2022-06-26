@@ -173,8 +173,9 @@ ReturnVal debug(const char* program_name, char* program_arguments[], unsigned lo
         /// add breakpoint at function return address
         ret_address = ptrace(PTRACE_PEEKTEXT, program_pid, Regs().rsp, NULL);
         ret_instruction = AddBreakpoint(ret_address);
+        printf("debug:: ret_address: 0x%lx,   ret_instruction: 0x%lx\n", ret_address, ret_instruction);
         waitFor(ret_address);
-        //printf("debug:: ret_address: 0x%lx,   ret_instruction: 0x%lx\n", ret_address, ret_instruction);
+        
         
         
         /// get return value of function
