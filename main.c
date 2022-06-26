@@ -53,9 +53,7 @@ int main(int argc,char* argv[]) {
         End(elf_file, fd);
     }
     if (func_sym.st_shndx == STB_UND){
-        
-    
-        //printf("%s is Undefined! Need to determine on runtime\n", function_name);
+        printf("%s is Undefined! Need to determine on runtime\n", function_name);
         Elf64_Shdr sh_rela_plt = get_section_header(elf_file, elf_header, ".rela.plt", 0);
         Elf64_Addr func_address = 0;
         res = readRelaSym(elf_file, sh_rela_plt, function_name, &func_address);
