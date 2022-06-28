@@ -8,8 +8,6 @@
 #include "sys/types.h"
 #include <sys/user.h>
 
-#include "assert.h"
-
 
 enum OP{Add, Remove};
 
@@ -50,11 +48,8 @@ unsigned long AddBreakpoint(Elf64_Addr address){
     //printf("DBG: Original data at 0x%llx: 0x%lx,    trap: 0x%lx\n", address, data, data_trap);
     ptrace(PTRACE_POKETEXT, program_pid, (void*)address, (void*)data_trap);
     
-    unsigned long data2 = ptrace(PTRACE_PEEKTEXT, program_pid, (void*)address, NULL);
+    //unsigned long data2 = ptrace(PTRACE_PEEKTEXT, program_pid, (void*)address, NULL);
     //printf("DBG: altered data at 0x%llx: 0x%lx\n", address, data2);
-    if(data2 != data_trap){
-        exit(1);
-    }
     
     return data;
 }
@@ -73,7 +68,7 @@ unsigned long RemoveBreakpoint(Elf64_Addr address, unsigned long data){
     
     return data;
 }
-
+/*
 ReturnVal Break(unsigned long address){
     assert(address > 0);
     int wait_status;
@@ -93,7 +88,7 @@ ReturnVal Break(unsigned long address){
     RemoveBreakpoint(address, instruction);
     
 }
-
+*/
 int singleStep(){
     int wait_status;
     //printf("singleStep:: brfore: 0x%lx", Regs().rip-1);

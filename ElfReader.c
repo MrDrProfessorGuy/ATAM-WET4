@@ -3,8 +3,6 @@
 #include "stdlib.h"
 #include "string.h"
 
-#include "assert.h"
-#include "stdio.h"
 
 #define NextSH(sh, size) ((Elf64_Shdr*) ((char*)sh + size))
 #define NextPH(ph, size) ((Elf64_Phdr*) ((char*)ph + size))
@@ -93,7 +91,7 @@ int readSymtab(const ElfFile elf_file, Elf64_Shdr symtab_sh, char* sym_name, Elf
     }
     Elf64_Xword sym_num = symtable_size/sym_size;
     
-    assert(symtable_size%sym_size == 0);
+    //assert(symtable_size%sym_size == 0);
     
     Elf64_Shdr sh_strtab = get_section_header(elf_file, getElfHeader(elf_file), NULL, symtab_sh.sh_link);
     
@@ -136,14 +134,14 @@ Elf64_Addr getVirtualAddress(const ElfFile elf_file, Elf64_Off file_offset){
 
 
 int cmp_sym_name(const ElfFile elf_file, Elf64_Shdr symtab_sh, char* sym_name, Elf64_Sym func_sym){
-    Elf64_Xword symtable_size = symtab_sh.sh_size;
+    //Elf64_Xword symtable_size = symtab_sh.sh_size;
     Elf64_Xword sym_size = symtab_sh.sh_entsize;
     if (sym_size == 0){
         return NAME_NOT_FOUND;
     }
     //Elf64_Xword sym_num = symtable_size/sym_size;
     
-    assert(symtable_size%sym_size == 0);
+    //assert(symtable_size%sym_size == 0);
     
     Elf64_Shdr sh_strtab = get_section_header(elf_file, getElfHeader(elf_file), NULL, symtab_sh.sh_link);
     
@@ -165,7 +163,7 @@ int readRelaSym(const ElfFile elf_file, Elf64_Shdr sh_rela, char* sym_name, Elf6
     }
     Elf64_Xword sym_num = symtable_size/sym_size;
     
-    assert(symtable_size%sym_size == 0);
+    //assert(symtable_size%sym_size == 0);
     
     Elf64_Shdr sh_dynsym = get_section_header(elf_file, getElfHeader(elf_file), NULL, sh_rela.sh_link);
     Elf64_Sym* func_sym;
@@ -184,9 +182,6 @@ int readRelaSym(const ElfFile elf_file, Elf64_Shdr sh_rela, char* sym_name, Elf6
     }
     
     return NAME_NOT_FOUND;
-    if (readSymtab(elf_file,sh_dynsym,sym_name,func_sym) == NAME_NOT_FOUND){
-        assert(0);
-    }
 }
 
 int readDynSym(const ElfFile elf_file, Elf64_Shdr sh_rela, char* sym_name, Elf64_Addr* func_address){
@@ -197,7 +192,7 @@ int readDynSym(const ElfFile elf_file, Elf64_Shdr sh_rela, char* sym_name, Elf64
     }
     Elf64_Xword sym_num = symtable_size/sym_size;
     
-    assert(symtable_size%sym_size == 0);
+    //assert(symtable_size%sym_size == 0);
     
     Elf64_Shdr sh_dynsym = get_section_header(elf_file, getElfHeader(elf_file), NULL, sh_rela.sh_link);
     Elf64_Sym* func_sym;
@@ -215,9 +210,6 @@ int readDynSym(const ElfFile elf_file, Elf64_Shdr sh_rela, char* sym_name, Elf64
     }
     
     return NAME_NOT_FOUND;
-    if (readSymtab(elf_file,sh_dynsym,sym_name,func_sym) == NAME_NOT_FOUND){
-        assert(0);
-    }
 }
 
 

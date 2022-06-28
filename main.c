@@ -10,7 +10,6 @@
 #include "Debugger.h"
 
 
-#include "assert.h"
 
 void End(ElfFile file, int fd);
 
@@ -36,7 +35,7 @@ int main(int argc,char* argv[]) {
     
     elf_header = getElfHeader(elf_file);
     if(!isExecutable(elf_header)){
-        printf("PRF:: %s not an executable! :(\n)",program_name);
+        printf("PRF:: %s not an executable! :(\n",program_name);
         End(elf_file, fd);
     }
     
@@ -57,7 +56,6 @@ int main(int argc,char* argv[]) {
         //printf("%s is Undefined! Need to determine on runtime\n", function_name);
         Elf64_Shdr sh_rela_plt = get_section_header(elf_file, elf_header, ".rela.plt", 0);
         res = readRelaSym(elf_file, sh_rela_plt, function_name, &func_address);
-        assert(res != NAME_NOT_FOUND);
         if (res == NAME_NOT_FOUND){
             End(elf_file, fd);
         }
