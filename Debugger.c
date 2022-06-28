@@ -55,9 +55,9 @@ unsigned long AddBreakpoint(Elf64_Addr address){
 }
 unsigned long RemoveBreakpoint(Elf64_Addr address, unsigned long data){
     struct user_regs_struct regs;
-    unsigned long curr_data = ptrace(PTRACE_PEEKTEXT, program_pid, (void*)address, NULL);
+    //unsigned long curr_data = ptrace(PTRACE_PEEKTEXT, program_pid, (void*)address, NULL);
     //printf("DBG: restoring data at 0x%llx from  0x%lx to 0x%lx\n", address, curr_data, data);
-    assert((data&0xFFFFFFFFFFFFFF00) == (curr_data & 0xFFFFFFFFFFFFFF00));
+    //assert((data&0xFFFFFFFFFFFFFF00) == (curr_data & 0xFFFFFFFFFFFFFF00));
     
     //unsigned long data_trap = (curr_data & 0xFFFFFFFFFFFFFF00) | data;
     ptrace(PTRACE_POKETEXT, program_pid, (void*)address, (void*)data);
