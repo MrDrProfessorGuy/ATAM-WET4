@@ -68,7 +68,7 @@ int main(int argc,char* argv[]) {
         func_address = func_sym.st_value;
     }
 
-    debug(program_name, program_arguments, func_address, redirection);
+    debug(program_name, argv+2, func_address, redirection);
     End(elf_file, fd);
     return 0;
 }
